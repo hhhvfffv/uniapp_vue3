@@ -1,0 +1,64 @@
+{
+	//组件自动导入规则
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			// uni-ui 规则如下配置 页面中如果出现uni开头的组件，则自动导入 uni-ui 组件库
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
+	},
+	"pages": [
+		{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/classify",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		},
+		{
+			"path": "pages/my",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/buy",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#a0f6ed",
+		"selectedColor": "#3662e7",
+		"list": [
+			{
+				"text": "首页",
+				"pagePath": "pages/index"
+			},
+			{
+				"text": "分类",
+				"pagePath": "pages/classify"
+			},
+			{
+				"text": "购物车",
+				"pagePath": "pages/buy"
+			},
+			{
+				"text": "我的",
+				"pagePath": "pages/my"
+			}
+		]
+	}
+}
