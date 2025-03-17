@@ -10,6 +10,7 @@
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 onLoad(() => {
   console.log('onLoad')
+  
 })
 </script>
 
