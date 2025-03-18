@@ -8,10 +8,11 @@
 
 <script setup>
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
+import usePiniaIndex from '@/store/index'
 onLoad(() => {
-  console.log('onLoad')
-  
+
 })
+
 </script>
 
 <style scoped></style>
