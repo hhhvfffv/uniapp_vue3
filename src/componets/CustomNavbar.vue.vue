@@ -1,6 +1,6 @@
 
 <template>
-  <view class="navbar">
+  <view class="navbar" :style="{paddingTop:safeAreaInsets?.top + 'px'}">
     <!-- logo文字 -->
     <view class="logo">
       <image class="logo-image" src="@/static/images/logo.png"></image>
@@ -15,7 +15,11 @@
 </template>
 
 <script setup>
-//
+//获取const屏幕边界到安全区域距离
+const {safeAreaInsets} = uni.getWindowInfo()
+console.log(safeAreaInsets);
+
+
 </script>
 
 
