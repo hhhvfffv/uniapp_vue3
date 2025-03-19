@@ -4,7 +4,9 @@
 		"autoscan": true,
 		"custom": {
 			// uni-ui 规则如下配置 页面中如果出现uni开头的组件，则自动导入 uni-ui 组件库
-			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+			// 检测到以Xtx开头的组件，就在componets查找
+			"^Xtx(.*)": "@/components/Xtx$1.vue" //$1是前面(.*)的插入占位符号
 		}
 	},
 	"pages": [
