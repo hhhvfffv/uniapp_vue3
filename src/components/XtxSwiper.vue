@@ -1,7 +1,6 @@
-
 <template>
   <view class="carousel">
-    <swiper :circular="true" :autoplay="false" :interval="3000">
+    <swiper :circular="true" :autoplay="true" :interval="3000" @change="onChange">
       <swiper-item>
         <navigator url="/pages/index/index" hover-class="none" class="navigator">
           <image
@@ -12,7 +11,7 @@
         </navigator>
       </swiper-item>
       <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
+        <navigator url="/pages/index" hover-class="none" class="navigator">
           <image
             mode="aspectFill"
             class="image"
@@ -45,7 +44,16 @@
 <script setup>
 import { ref } from 'vue'
 
-const activeIndex = ref(0)
+const activeIndex = ref(1)
+
+//方法手搓指示点
+function onChange(ev){
+  // console.log(ev);
+  //赋值
+  activeIndex.value = ev.detail?.current
+  // console.log(activeIndex.value);
+  
+}
 </script>
 
 <style lang="scss">
