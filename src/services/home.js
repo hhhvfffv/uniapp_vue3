@@ -16,3 +16,15 @@ export const getHomeBannnerAPI = (distributionSite = 1) => {
         }
     })
 }
+
+/**
+ * 首页——分类展示（小程序）
+ * Get请求
+ * /home/category/mutli
+ */
+export const getCategoryAPI = () => {
+    return http({
+        method: 'GET',
+        url: '/home/category/mutli'
+    })
+}
