@@ -28,3 +28,16 @@ export const getCategoryAPI = () => {
         url: '/home/category/mutli'
     })
 }
+
+/**
+ * 首页——商品热门推荐（小程序）
+ * Get请求
+ * /home/hot/mutli
+ */
+export const getHomeHotAPI = () => {
+    return http({
+        method: 'GET',
+        url: '/home/hot/mutli'
+    })
+}
+

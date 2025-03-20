@@ -2,7 +2,7 @@
   <view class="carousel">
     <swiper :circular="true" :autoplay="true" :interval="3000" @change="onChange">
       <swiper-item v-for="(item, index) in list" :key="item.id">
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
+        <navigator url="/pages/index" hover-class="none" class="navigator">
           <image
             mode="aspectFill"
             class="image"
