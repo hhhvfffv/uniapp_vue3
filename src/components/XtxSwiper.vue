@@ -1,30 +1,12 @@
 <template>
   <view class="carousel">
     <swiper :circular="true" :autoplay="true" :interval="3000" @change="onChange">
-      <swiper-item>
+      <swiper-item v-for="(item, index) in list" :key="item.id">
         <navigator url="/pages/index/index" hover-class="none" class="navigator">
           <image
             mode="aspectFill"
             class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_1.jpg"
-          ></image>
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_2.jpg"
-          ></image>
-        </navigator>
-      </swiper-item>
-      <swiper-item>
-        <navigator url="/pages/index/index" hover-class="none" class="navigator">
-          <image
-            mode="aspectFill"
-            class="image"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/slider_3.jpg"
+            :src="item.imgUrl"
           ></image>
         </navigator>
       </swiper-item>
@@ -32,7 +14,7 @@
     <!-- 指示点 -->
     <view class="indicator">
       <text
-        v-for="(item, index) in 3"
+        v-for="(item, index) in list.length"
         :key="item"
         class="dot"
         :class="{ active: index === activeIndex }"
@@ -42,7 +24,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+
+import { ref,watch } from 'vue'
 
 const activeIndex = ref(1)
 
@@ -52,8 +35,13 @@ function onChange(ev){
   //赋值
   activeIndex.value = ev.detail?.current
   // console.log(activeIndex.value);
-  
 }
+// 子组件接收方式
+const {list} = defineProps(["list"])
+
+
+
+
 </script>
 
 <style lang="scss">
