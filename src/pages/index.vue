@@ -4,7 +4,11 @@
  *这里是需要滚动的但是不能带着标题栏一起滚动
  *所以这里用了一个scroll-view组件
  */ -->
-<scroll-view scroll-y class="index-scroll" @scrolltolower="GetScrollButton">
+ <!-- //refresher-enabled开启下拉刷新 -->
+<scroll-view scroll-y class="index-scroll" 
+@scrolltolower="GetScrollButton"
+:refresher-enabled="true" @refresherrefresh="getNewData"
+:refresher-triggered="isGetNewDate_" >
   <!-- // 轮播图 -->
       <XtxSwiper :list="bannerList"/>
   <!-- // 分类展示 -->
@@ -44,6 +48,8 @@ const categoryList = ref([])
 const hotList = ref([])
 //4.下拉刷新猜你喜欢获取更多数据
 const Getref = ref()
+//5.下拉刷新完成关闭动画
+const isGetNewDate_ = ref(false)
 
 //1.封装获取轮播图的请求
 const getHomeBannerData = async()=>{
@@ -71,6 +77,21 @@ const GetScrollButton = ()=>{
   console.log("我到页面底部咯，嘿嘿");
   Getref.value?.GetMore()
   
+}
+
+//5.下拉刷新
+const getNewData = async()=>{
+  //开启动画
+  isGetNewDate_.value = true
+  // //1.调用加载图片的方法
+  // await getHomeBannerData(),
+  // //2.调用分类的方法
+  // await getCategoryData()
+  // //3.调用热门推荐的方法
+  // await getHomeHotData()
+  await Promise.all([getHomeBannerData(),getCategoryData(),getHomeHotData()])
+  //关闭动画
+  isGetNewDate_.value = false
 }
 
 
