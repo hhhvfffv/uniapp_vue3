@@ -9,14 +9,17 @@
 @scrolltolower="GetScrollButton"
 :refresher-enabled="true" @refresherrefresh="getNewData"
 :refresher-triggered="isGetNewDate_" >
-  <!-- // 轮播图 -->
+    <!-- 骨架 -->
+    <PageSkeleton v-if="isOnLoad"/>
+<template v-else>
+    <!-- // 轮播图 -->
       <XtxSwiper :list="bannerList"/>
   <!-- // 分类展示 -->
        <CategoryPanel :list="categoryList"/>
        <HotPanel :list="hotList"/>
   <!-- // 猜你喜欢 -->
        <XtxGuess ref="Getref"/>
-       <view class="index">index</view>
+</template>
 </scroll-view>
 </template>
 
@@ -25,19 +28,24 @@
 import CustomNavbar from '../components/CustomNavbar.vue'
 import CategoryPanel from '../components/CategoryPanel.vue'
 import HotPanel from '../components/HotPanel.vue'
+import PageSkeleton from '../components/PageSkeleton.vue'    // 引入页面骨架屏组件
 import {getHomeBannnerAPI,getCategoryAPI,getHomeHotAPI} from '@/services/home'
 
 import { ref,watch } from 'vue';
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 
 // 页面加载时调用
-onLoad(()=>{
-//1.调用加载图片的方法
+onLoad(async()=>{
+  isOnLoad.value = true//骨架屏显示
+await Promise.all([
+  //1.调用加载图片的方法
   getHomeBannerData(),
   //2.调用分类的方法
-  getCategoryData()
+  getCategoryData(),
   //3.调用热门推荐的方法
   getHomeHotData()
+])
+isOnLoad.value = false//骨架屏消失
 })
 
 //1. 图片的数组
@@ -50,6 +58,8 @@ const hotList = ref([])
 const Getref = ref()
 //5.下拉刷新完成关闭动画
 const isGetNewDate_ = ref(false)
+//6.骨架屏是否显示
+const isOnLoad = ref(false)
 
 //1.封装获取轮播图的请求
 const getHomeBannerData = async()=>{
