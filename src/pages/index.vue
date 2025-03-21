@@ -1,9 +1,19 @@
 <template>
  <CustomNavbar />
- <XtxSwiper :list="bannerList"/>
- <CategoryPanel :list="categoryList"/>
- <HotPanel :list="hotList"/>
- <view class="index">index</view>
+ <!-- /**
+ *这里是需要滚动的但是不能带着标题栏一起滚动
+ *所以这里用了一个scroll-view组件
+ */ -->
+<scroll-view scroll-y class="index-scroll" @scrolltolower="GetScrollButton">
+  <!-- // 轮播图 -->
+      <XtxSwiper :list="bannerList"/>
+  <!-- // 分类展示 -->
+       <CategoryPanel :list="categoryList"/>
+       <HotPanel :list="hotList"/>
+  <!-- // 猜你喜欢 -->
+       <XtxGuess ref="Getref"/>
+       <view class="index">index</view>
+</scroll-view>
 </template>
 
 <script setup>
@@ -32,6 +42,8 @@ const bannerList = ref([])
 const categoryList = ref([])
 //3. 热门推荐的数组
 const hotList = ref([])
+//4.下拉刷新猜你喜欢获取更多数据
+const Getref = ref()
 
 //1.封装获取轮播图的请求
 const getHomeBannerData = async()=>{
@@ -54,7 +66,12 @@ const getHomeHotData = async()=>{
   hotList.value = res.result
 }
 
-
+//4.页面触底时，向猜你喜欢发送请求，获取后续的数据并渲染
+const GetScrollButton = ()=>{
+  console.log("我到页面底部咯，嘿嘿");
+  Getref.value?.GetMore()
+  
+}
 
 
 </script>
@@ -62,6 +79,15 @@ const getHomeHotData = async()=>{
 <style lang="scss">
 page{
   background-color: #f7f7f7;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+.index-scroll{
+  // 因为给不给他一个高就无法判断滚动条的高度，所以给他一个最小高度
+  height: 0;
+  flex: 1;
+}
+
 
 </style>

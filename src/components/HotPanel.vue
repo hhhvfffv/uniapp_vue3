@@ -12,12 +12,9 @@
         <image
           class="image"
           mode="aspectFit"
-          :src="item.pictures[0]"
-        ></image>
-        <image
-          class="image"
-          mode="aspectFit"
-          :src="item.pictures[1]"
+          v-for="item_pic in item.pictures"
+          :key="item_pic"
+          :src="item_pic"
         ></image>
       </navigator>
     </view>

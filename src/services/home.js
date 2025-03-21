@@ -41,3 +41,19 @@ export const getHomeHotAPI = () => {
     })
 }
 
+/**
+ * 猜你喜欢
+ * Get
+ * /home/goods/guessLike
+ */
+export const getHomeGoodGuessLikeAPI = (data_ = { page: 1, pageSize: 10 }) => {
+    return http({
+        method: 'GET',
+        url: '/home/goods/guessLike',
+        data: {
+            page: data_.page,
+            pageSize: data_.pageSize
+        }
+    })
+}
+
