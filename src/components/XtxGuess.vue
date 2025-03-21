@@ -6,7 +6,7 @@
   <view class="guess">
     <navigator
       class="guess-item"
-      v-for="item in loadingText"
+      v-for="item in loadingData"
       :key="item.id"
       :url="`/pages/goods/goods?id=4007498`"
     >
@@ -34,7 +34,7 @@ onMounted(()=>{
     getHomeGoodGuessLikeData()
 })
 
-const loadingText = ref([]) 
+const loadingData = ref([]) 
 //页码请求参数 
 let page = ref(33)
 //没有数据就停止请求
@@ -52,7 +52,7 @@ const getHomeGoodGuessLikeData = async () => {
   }
   const res = await getHomeGoodGuessLikeAPI({page:page.value,pageSize:10}) 
   //赋值,因为后续要追加
-  loadingText.value.push(...res.result.items )
+  loadingData.value.push(...res.result.items )
 
   //页码累加
     if(page.value <= res.result.pages){
@@ -67,10 +67,19 @@ const addPage = () =>{
 page.value += 1
 }
 
+//5.下拉刷新重置页码，数据，和结束标记
+const resetData = ()=>{
+  page.value = 1,           //重置页码
+  loadingData.value = [],   //重置数据
+  stop.value = false        //重置结束标记
+}
+
 //暴露方法获取数据的
 defineExpose({
-  GetMore:getHomeGoodGuessLikeData
+  GetMore:getHomeGoodGuessLikeData, //获取数据渲染的方法
+  resetData                         //重置触底刷新请求的数据
 })
+
 </script>
 
 <style lang="scss">

@@ -72,7 +72,7 @@ const getHomeHotData = async()=>{
   hotList.value = res.result
 }
 
-//4.页面触底时，向猜你喜欢发送请求，获取后续的数据并渲染
+//4.页面触底时，向猜你喜欢发送请求，获取猜你喜欢的数据并渲染
 const GetScrollButton = ()=>{
   console.log("我到页面底部咯，嘿嘿");
   Getref.value?.GetMore()
@@ -83,12 +83,9 @@ const GetScrollButton = ()=>{
 const getNewData = async()=>{
   //开启动画
   isGetNewDate_.value = true
-  // //1.调用加载图片的方法
-  // await getHomeBannerData(),
-  // //2.调用分类的方法
-  // await getCategoryData()
-  // //3.调用热门推荐的方法
-  // await getHomeHotData()
+  Getref.value?.resetData()
+  Getref.value?.GetMore()
+  //重新请求数据
   await Promise.all([getHomeBannerData(),getCategoryData(),getHomeHotData()])
   //关闭动画
   isGetNewDate_.value = false
