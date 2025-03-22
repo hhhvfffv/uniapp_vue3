@@ -5,7 +5,9 @@
     <view class="goods">
       <!-- 商品主图 -->
       <view class="preview">
-        <swiper circular class="swiper_">
+        <swiper circular 
+              @change="changeIndex"
+        class="swiper_">
           <swiper-item 
           class="swiper-item"
           v-for="item in goods.mainPictures"
@@ -14,14 +16,15 @@
             <image
             style="width: 100%;height: 100%;"
               mode="scaleToFill"
+              @tap="onImageBag(item)"
                :src="item"
             />
             </swiper-item>
         </swiper>
         <view class="indicator">
-          <text class="current">1</text>
+          <text class="current">{{IndexSwiper}}</text>
           <text class="split">/</text>
-          <text class="total">5</text>
+          <text class="total">{{total}}</text>
         </view>
       </view>
 
@@ -125,7 +128,7 @@
 
 <script setup>
 import { getGoodsListAPI } from '../services/goods'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 
 
@@ -143,19 +146,42 @@ const goods = ref([])
 const properties = ref([])
 const pictures = ref([])
 const similarProducts = ref([])
+//2.轮播图下标同步切换
+const IndexSwiper = ref(1)
+const total = ref(10)
 
 
 
 
-//2.获取页面的数据
+
+
+
+
+
+
+//1.获取页面的数据
 const getGoodsData = async()=>{
   const res = await getGoodsListAPI(id)
   goods.value = res.result
-properties.value = res.result.details.properties
-pictures.value = res.result.details.pictures
-similarProducts.value = res.result.similarProducts
+  properties.value = res.result.details.properties
+  pictures.value = res.result.details.pictures
+  similarProducts.value = res.result.similarProducts
+  total.value = goods.value.mainPictures.length
   console.log(goods.value);
   
+}
+
+//2.轮播图下标同步切换
+const changeIndex = (ev)=>{
+  IndexSwiper.value = ev.detail.current + 1
+}
+
+//3.点击大图预览
+const onImageBag = (url)=>{
+  uni.previewImage({
+  current: url, // 当前显示图片的http链接
+  urls: goods.value.mainPictures // 需要预览的图片http链接列表
+})
 }
 
 </script>
