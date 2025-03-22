@@ -17,7 +17,8 @@
     <!-- 推荐列表 -->
     <scroll-view scroll-y class="scroll-view" 
     v-for="(item,index) in subTypes" :key="item.id"
-    v-show="currentIndex === index">
+    v-show="currentIndex === index"
+    @scrolltolower="onScrollToLower">
       <view class="goods">
         <navigator
           hover-class="none"
@@ -37,7 +38,7 @@
           </view>
         </navigator>
       </view>
-      <view class="loading-text">正在加载...</view>
+      <view class="loading-text" v-if="item.goodsItems.stop">正在加载...</view>
     </scroll-view>
   </view>
 </template>
@@ -70,6 +71,8 @@ let bannerPicture = ref()
 let subTypes = ref([])
 //3.tab切换条
 let currentIndex = ref(0)
+//4.滚动条触底事件(结束条件)
+let stop = ref(true)
 
 
 //动态设置标题
@@ -82,12 +85,49 @@ uni.setNavigationBarTitle({
 
 // 2.动态获取数据
 const getHotRecommendData = async() => {
-  const res = await getHotRecommendAPI(currUrlMap.url)
+  const res = await getHotRecommendAPI(currUrlMap.url,{
+    // 判断是否是开发环境，是的话就起始页码设置为30，否则为1
+    page:import.meta.env.DEV ? 2 : 1,
+    pageSize:10,
+    subType:''
+  })
    //数组赋值
    bannerPicture.value = res.result.bannerPicture
    subTypes.value = res.result.subTypes
-   console.log(res);
-   
+}
+
+//4.当选项触底时，加载更多数据
+const onScrollToLower = async() => {
+  //获取当前选项
+  let currsubTypes = subTypes.value[currentIndex.value]
+  //当前的页码小于总页数
+  if(currsubTypes.goodsItems.page < currsubTypes.goodsItems.pageSize){
+        //获取当前的页码++
+  currsubTypes.goodsItems.page ++
+    currsubTypes.goodsItems.stop = true
+
+  }else{
+    uni.showToast({
+      icon: 'none',
+      title: '没有更多数据了',
+      duration: 1000
+    })
+    currsubTypes.goodsItems.stop = false
+    // console.log(currsubTypes.goodsItems.stop);
+    
+    return 
+  }
+  //获取当前的api进行调用渲染
+  const res = await getHotRecommendAPI(currUrlMap.url,{
+    subType:currsubTypes.id,
+    page:currsubTypes.goodsItems.page,
+    pageSize:currsubTypes.goodsItems.pageSize
+  })
+  
+  // 新的数组
+  let newGoodsItems = res.result.subTypes[currentIndex.value].goodsItems.items
+  //数组赋值
+  subTypes.value[currentIndex.value].goodsItems.items.push(...newGoodsItems)  
 }
 
 
@@ -119,6 +159,7 @@ page {
   top: 0;
 }
 .scroll-view {
+height: 0;
   flex: 1;
 }
 .tabs {
