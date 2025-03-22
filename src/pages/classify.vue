@@ -34,7 +34,7 @@
               :key="goods.id"
               class="goods"
               hover-class="none"
-              :url="`/pages/goods?id=`"
+              :url="`/pages/goods?id=${goods.id}`"
             >
               <image
                 class="image"
@@ -98,8 +98,6 @@ const getBannerList = async ()=>{
 const getCategoryTopList = async ()=>{
   const res = await getCategoryTopAPI()
 categoryList.value = res.result
-console.log(categoryList.value);
-
 }
 </script>
    
