@@ -28,7 +28,7 @@
 import CustomNavbar from '../components/CustomNavbar.vue'
 import CategoryPanel from '../components/CategoryPanel.vue'
 import HotPanel from '../components/HotPanel.vue'
-import PageSkeleton from '../components/PageSkeleton.vue'    // 引入页面骨架屏组件
+import PageSkeleton from '../components/Skeleton/PageSkeleton.vue'    // 引入页面骨架屏组件
 import {getHomeBannnerAPI,getCategoryAPI,getHomeHotAPI} from '@/services/home'
 
 import { ref,watch } from 'vue';

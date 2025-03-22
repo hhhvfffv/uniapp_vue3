@@ -1,7 +1,7 @@
 
 
 <template>
-  <view class="viewport">
+  <view class="viewport" v-if="loadingSkeleton">
     <!-- 搜索框 -->
     <view class="search">
       <view class="input">
@@ -51,17 +51,24 @@
       </scroll-view>
     </view>
   </view>
+  <classifySkeleton  v-else />
     </template>
 
 <script setup>
 import {getHomeBannnerAPI} from '../services/home'
 import {getCategoryTopAPI} from '../services/classify'
+import classifySkeleton from '../components/Skeleton/classifySkeleton.vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 import {ref,computed} from 'vue'
 
-onLoad(()=>{
-  getBannerList()  
+//5.骨架屏
+onLoad(async()=>{
+  loadingSkeleton.value = false
+  await Promise.all([
+    getBannerList()  ,
   getCategoryTopList()
+  ])
+  loadingSkeleton.value = true
 })
 
 
@@ -76,6 +83,9 @@ const categoryList_ = computed(()=>{
   //根据当前活动的索引来，动态计算要展示的二级分类数据
   return categoryList.value[activeIndex.value]?.children || []
 })
+//5.骨架屏
+const loadingSkeleton = ref(false)
+
 
 
 //1.1 获取轮播图数据
@@ -93,7 +103,7 @@ console.log(categoryList.value);
 }
 </script>
    
-<style lang="scss">
+<style lang="scss" scoped>
 page {
   height: 100%;
   overflow: hidden;
