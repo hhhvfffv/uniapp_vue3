@@ -131,8 +131,8 @@
     type="top"
     background-color="#ffffff"
    >
-   <AddressPanel v-show="isPopupShow === 'address'"/>
-   <ServicePanel v-show="isPopupShow ==='service'"/>
+   <AddressPanel @close="popup.close()" v-show="isPopupShow === 'address'"/>
+   <ServicePanel @close="popup.close()" v-show="isPopupShow ==='service'"/>
    </uni-popup>
 </template>
 

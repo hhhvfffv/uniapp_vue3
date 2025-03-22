@@ -1,11 +1,12 @@
 <script setup>
-//
+//关于关闭弹出层
+const emit = defineEmits(['close'])
 </script>
 
 <template>
   <view class="service-panel">
     <!-- 关闭按钮 -->
-    <text class="close icon-close"></text>
+    <text class="close" @tap="emit('close')" style="color: #ccc;">x</text>
     <!-- 标题 -->
     <view class="title">服务说明</view>
     <!-- 内容 -->
