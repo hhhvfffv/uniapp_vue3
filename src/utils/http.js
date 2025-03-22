@@ -71,7 +71,7 @@ export const http = (options) => {
                     //3.2-401错误 ->token失效，重新登录（跳转到登录页面）
                     const memberStore = useMemberStore()
                     memberStore.clearProfile()
-                    uni.navigateTo({ url: '/pages/log' })
+                    uni.navigateTo({ url: '/pages/login' })
                     // 标记失败不再执行resolve
                     reject(new Error('token失效，请重新登录'))
                 } else {
