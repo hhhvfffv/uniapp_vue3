@@ -44,11 +44,11 @@
           <text class="label">选择</text>
           <text class="text ellipsis"> 请选择商品规格 </text>
         </view>
-        <view class="item arrow">
+        <view class="item arrow" @tap="popupShow('address')">
           <text class="label">送至</text>
           <text class="text ellipsis"> 请选择收获地址 </text>
         </view>
-        <view class="item arrow">
+        <view class="item arrow" @tap="popupShow('service')">
           <text class="label">服务</text>
           <text class="text ellipsis"> 无忧退 快速退款 免费包邮 </text>
         </view>
@@ -124,10 +124,22 @@
       <view class="buynow"> 立即购买 </view>
     </view>
   </view>
+
+  <!-- 弹出层 -->
+   <uni-popup
+    ref="popup"
+    type="top"
+    background-color="#ffffff"
+   >
+   <AddressPanel v-show="isPopupShow === 'address'"/>
+   <ServicePanel v-show="isPopupShow ==='service'"/>
+   </uni-popup>
 </template>
 
 <script setup>
 import { getGoodsListAPI } from '../services/goods'
+import {AddressPanel} from '../components/goods/AddressPanel.vue'
+import {ServicePanel} from '../components/goods/ServicePanel.vue'
 import { computed, ref } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 
@@ -149,6 +161,10 @@ const similarProducts = ref([])
 //2.轮播图下标同步切换
 const IndexSwiper = ref(1)
 const total = ref(10)
+//3.弹出层
+const popup = ref()
+//4.弹出层判断，地址和退货
+const isPopupShow = ref("address")
 
 
 
@@ -182,6 +198,14 @@ const onImageBag = (url)=>{
   current: url, // 当前显示图片的http链接
   urls: goods.value.mainPictures // 需要预览的图片http链接列表
 })
+}
+
+//4.弹出层判断，地址和退货
+const popupShow = (name)=>{
+  //判断是否哪个弹出层
+  isPopupShow.value = name
+  //打开弹出层
+  popup.value.open("bottom")
 }
 
 </script>
