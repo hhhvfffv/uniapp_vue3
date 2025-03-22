@@ -53,27 +53,27 @@
     </view>
 
     <!-- 商品详情 -->
-    <view class="detail panel">
+      <view class="detail panel">
       <view class="title">
         <text>详情</text>
       </view>
       <view class="content">
         <view class="properties">
           <!-- 属性详情 -->
-          <view class="item" v-for="item in goods.details.properties" :key="item.name">
+          <view class="item" v-for="item in properties" :key="item.name">
             <text class="label">{{item.name}}</text>
-            <text class="value">{{item.valuue}}</text>
+            <text class="value">{{item.value}}</text>
           </view>
-          
         </view>
         <!-- 图片详情 -->
         <image
+        style="width: 100%;height: 100%;"
           mode="widthFix"
-          v-for="item in goods.details.pictures"
+          v-for="item in pictures"
           :key="item"
           :src="item"
         ></image>
-       
+        
       </view>
     </view>
 
@@ -84,7 +84,7 @@
       </view>
       <view class="content">
         <navigator
-          v-for="item in goods.similarProducts"
+          v-for="item in similarProducts"
           :key="item.id"
           class="goods"
           hover-class="none"
@@ -132,14 +132,17 @@ import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 //1.获取路由传参
 const {id} = defineProps(['id'])
 
-onLoad(()=>{
-  getGoodsData()
+onLoad(async()=>{
+  await getGoodsData()
 })
 
 // 0.获取屏幕边界到安全区域距离
 const {safeAreaInsets} = uni.getWindowInfo()
 //1.获取页面的数据
 const goods = ref([])
+const properties = ref([])
+const pictures = ref([])
+const similarProducts = ref([])
 
 
 
@@ -148,6 +151,9 @@ const goods = ref([])
 const getGoodsData = async()=>{
   const res = await getGoodsListAPI(id)
   goods.value = res.result
+properties.value = res.result.details.properties
+pictures.value = res.result.details.pictures
+similarProducts.value = res.result.similarProducts
   console.log(goods.value);
   
 }
@@ -164,6 +170,7 @@ page {
 }
 
 .viewport {
+  height: 100%;
   background-color: #f4f4f4;
 }
 
@@ -333,13 +340,13 @@ page {
 /* 同类推荐 */
 .similar {
   .content {
-    padding: 0 20rpx 200rpx;
+    padding: 0 10rpx 200rpx;
     background-color: #f4f4f4;
     display: flex;
     flex-wrap: wrap;
     .goods {
-      width: 340rpx;
-      padding: 24rpx 20rpx 20rpx;
+      width: 310rpx;
+      padding: 54rpx 20rpx 20rpx;
       margin: 20rpx 7rpx;
       border-radius: 10rpx;
       background-color: #fff;
