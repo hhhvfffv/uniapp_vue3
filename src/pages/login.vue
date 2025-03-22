@@ -1,5 +1,41 @@
 <script setup>
-//
+import {postLoginMinAPI,postLoginWxMinSimpleAPI} from '../services/login'
+import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
+//获取code（微信的登录凭证）
+onLoad(async()=>{
+const res = await wx.login()
+code = res.code
+console.log(code);
+
+})
+
+//1.获取code微信登录凭证
+let code = ''
+
+
+//获取授权[encryptedData,iv]
+const onGetphonenumber = (ev)=>{
+const encryptedData = ev.detail.encryptedData //2.获取加密数据（手机号）
+const iv = ev.detail.iv                       //2.获取iv
+
+//3.发送请求获取用户信息
+postLoginMinAPI({
+  code,
+  encryptedData,
+  iv
+})
+}
+
+//模拟手机号码登录
+const onGetphonenumberSimple = async()=>{
+ const res =await postLoginWxMinSimpleAPI('17781042925')
+ console.log(res);
+ uni.showToast({
+  icon: 'none',
+  title: '模拟登录成功',
+ })
+}
+
 </script>
 
 <template>
@@ -16,7 +52,7 @@
       <!-- <button class="button phone">登录</button> -->
 
       <!-- 小程序端授权登录 -->
-      <button class="button phone">
+      <button class="button phone" open-type="getPhoneNumber" @getphonenumber="onGetphonenumber">
         <text class="icon icon-phone"></text>
         手机号快捷登录
       </button>
@@ -26,7 +62,7 @@
         </view>
         <view class="options">
           <!-- 通用模拟登录 -->
-          <button>
+          <button @tap="onGetphonenumberSimple">
             <text class="icon icon-phone">模拟快捷登录</text>
           </button>
         </view>
