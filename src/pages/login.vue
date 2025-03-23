@@ -1,5 +1,6 @@
 <script setup>
 import {postLoginMinAPI,postLoginWxMinSimpleAPI} from '../services/login'
+import useMemberStore from '../store/index'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 //获取code（微信的登录凭证）
 onLoad(async()=>{
@@ -13,7 +14,7 @@ console.log(code);
 let code = ''
 
 
-//获取授权[encryptedData,iv]
+//2.获取授权[encryptedData,iv]
 const onGetphonenumber = (ev)=>{
 const encryptedData = ev.detail.encryptedData //2.获取加密数据（手机号）
 const iv = ev.detail.iv                       //2.获取iv
@@ -24,15 +25,33 @@ postLoginMinAPI({
   encryptedData,
   iv
 })
+ //登录跳转
+ loginSuccess(res.result)
 }
 
-//模拟手机号码登录
+//3.模拟手机号码登录
 const onGetphonenumberSimple = async()=>{
  const res =await postLoginWxMinSimpleAPI('17781042925')
- console.log(res);
+ //登录跳转
+ loginSuccess(res.result)
+}
+
+//4.封装登跳转模块（用于复用）
+const loginSuccess = (profile)=>{
+//1.保存会员信息
+let memberStore = useMemberStore()
+memberStore.setProfile(profile)//保存服务器返回的会员信息
+
+ //2.页面跳转
+ uni.switchTab({
+  url:'/pages/my',
+ })
+
+ //3.显示toast提示登录成功
  uni.showToast({
-  icon: 'none',
+  icon: 'success',
   title: '模拟登录成功',
+  duration: 500
  })
 }
 
