@@ -1,4 +1,7 @@
 <script setup>
+import useMemberStore from '../store/index'
+
+
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getWindowInfo()
 // 订单选项
@@ -8,6 +11,9 @@ const orderTypes = [
   { type: 3, text: '待收货', icon: 'icon-check' },
   { type: 4, text: '待评价', icon: 'icon-comment' },
 ]
+// 1.获取登录是的会员信息
+const memberStore = useMemberStore()
+
 </script>
 
 <template>
@@ -15,16 +21,16 @@ const orderTypes = [
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets.top + 'px' }">
       <!-- 情况1：已登录 -->
-      <view class="overview" v-if="false">
+      <view class="overview" v-if="memberStore.profile">
         <navigator url="/pagesMember/profile/profile" hover-class="none">
           <image
             class="avatar"
             mode="aspectFill"
-            src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/avatar_3.jpg"
+            :src="memberStore.profile.avatar"
           ></image>
         </navigator>
         <view class="meta">
-          <view class="nickname"> 黑马程序员 </view>
+          <view class="nickname"> {{memberStore.profile.nickname || memberStore.profile.account}} </view>
           <navigator class="extra" url="/pagesMember/profile/profile" hover-class="none">
             <text class="update">更新头像昵称</text>
           </navigator>
@@ -32,7 +38,7 @@ const orderTypes = [
       </view>
       <!-- 情况2：未登录 -->
       <view class="overview" v-else>
-        <navigator url="/pages/login/login" hover-class="none">
+        <navigator url="/pages/login" hover-class="none">
           <image
             class="avatar gray"
             mode="aspectFill"
