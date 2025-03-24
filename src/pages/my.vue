@@ -1,20 +1,4 @@
-<script setup>
-import useMemberStore from '../store/index'
 
-
-// 获取屏幕边界到安全区域距离
-const { safeAreaInsets } = uni.getWindowInfo()
-// 订单选项
-const orderTypes = [
-  { type: 1, text: '待付款', icon: 'icon-currency' },
-  { type: 2, text: '待发货', icon: 'icon-gift' },
-  { type: 3, text: '待收货', icon: 'icon-check' },
-  { type: 4, text: '待评价', icon: 'icon-comment' },
-]
-// 1.获取登录是的会员信息
-const memberStore = useMemberStore()
-
-</script>
 
 <template>
   <scroll-view class="viewport" scroll-y enable-back-to-top>
@@ -88,6 +72,28 @@ const memberStore = useMemberStore()
     </view>
   </scroll-view>
 </template>
+
+<script setup>
+import useMemberStore from '../store/index'
+
+
+// 获取屏幕边界到安全区域距离
+const { safeAreaInsets } = uni.getWindowInfo()
+// 订单选项
+const orderTypes = [
+  { type: 1, text: '待付款', icon: 'icon-currency' },
+  { type: 2, text: '待发货', icon: 'icon-gift' },
+  { type: 3, text: '待收货', icon: 'icon-check' },
+  { type: 4, text: '待评价', icon: 'icon-comment' },
+]
+// 1.获取登录是的会员信息
+const memberStore = useMemberStore()
+
+
+
+//2.下拉获取猜你喜欢的数据
+
+</script>
 
 <style lang="scss">
 page {

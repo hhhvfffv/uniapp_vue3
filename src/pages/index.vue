@@ -28,7 +28,8 @@
 import CustomNavbar from '../components/CustomNavbar.vue'
 import CategoryPanel from '../components/CategoryPanel.vue'
 import HotPanel from '../components/HotPanel.vue'
-import PageSkeleton from '../components/Skeleton/PageSkeleton.vue'    // 引入页面骨架屏组件
+import PageSkeleton from '../components/Skeleton/PageSkeleton.vue'  // 引入页面骨架屏组件
+import {useGuessList} from '../hooks/index'  
 import {getHomeBannnerAPI,getCategoryAPI,getHomeHotAPI} from '@/services/home'
 
 import { ref,watch } from 'vue';
@@ -54,8 +55,8 @@ const bannerList = ref([])
 const categoryList = ref([])
 //3. 热门推荐的数组
 const hotList = ref([])
-//4.下拉刷新猜你喜欢获取更多数据
-const Getref = ref()
+// //4.下拉刷新猜你喜欢获取更多数据
+// const Getref = ref()
 //5.下拉刷新完成关闭动画
 const isGetNewDate_ = ref(false)
 //6.骨架屏是否显示
@@ -82,12 +83,19 @@ const getHomeHotData = async()=>{
   hotList.value = res.result
 }
 
-//4.页面触底时，向猜你喜欢发送请求，获取猜你喜欢的数据并渲染
-const GetScrollButton = ()=>{
-  console.log("我到页面底部咯，嘿嘿");
-  Getref.value?.GetMore()
+// //4.页面触底时，向猜你喜欢发送请求，获取猜你喜欢的数据并渲染
+// const GetScrollButton = ()=>{
+//   console.log("我到页面底部咯，嘿嘿");
+//   Getref.value?.GetMore()
   
-}
+// }
+
+//4.下拉刷新猜你喜欢
+//Getref获取实例
+// GetScrollButton方法
+const {Getref,GetScrollButton} = useGuessList()
+
+
 
 //5.下拉刷新
 const getNewData = async()=>{

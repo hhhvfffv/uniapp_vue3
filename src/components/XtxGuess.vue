@@ -77,7 +77,7 @@ const resetData = ()=>{
 //暴露方法获取数据的
 defineExpose({
   GetMore:getHomeGoodGuessLikeData, //获取数据渲染的方法
-  resetData                         //重置触底刷新请求的数据
+  resetData                         //重置刷新请求的数据
 })
 
 </script>
