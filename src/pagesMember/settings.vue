@@ -3,7 +3,7 @@
 <template>
   <view class="viewport">
     <!-- 列表1 -->
-    <view class="list" v-if="true">
+    <view class="list" v-if="menberStore.profile">
       <navigator url="/pagesMember/address/address" hover-class="none" class="item arrow">
         我的收货地址
       </navigator>
@@ -20,13 +20,35 @@
     </view>
     <!-- 操作按钮 -->
     <view class="action">
-      <view class="button">退出登录</view>
+      <view class="button" @click="onLongOut" v-if="menberStore.profile">退出登录</view>
     </view>
   </view>
 </template>
 
 <script setup>
-//
+import useMemberStore from "../store/index"
+
+
+
+//1.退出登录弹出模态框
+const menberStore = useMemberStore()
+
+
+//1.退出登录弹出模态框
+const onLongOut = () => {
+  uni.showModal({
+    title:"退出登录!",
+    content:'是否退出当前账号',
+    success:(res)=>{
+      if(res.confirm){
+          //清理用户信息
+          menberStore.clearProfile()
+          //返回上一级页面
+          uni.navigateBack()
+      }
+    }
+  })
+}
 </script>
 
 <style lang="scss">
