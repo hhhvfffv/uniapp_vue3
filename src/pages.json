@@ -84,5 +84,28 @@
 				"pagePath": "pages/my"
 			}
 		]
+	},
+	//分包的页面规则
+	"subPackages": [
+		{
+			"root": "pagesMember",
+			"pages": [
+				{
+					"path": "settings",
+					"style": {
+						"navigationBarTitleText": "设置"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		//key是页面路径，value是网络类型
+		"pages/my": {
+			"network": "all", //所有网络类型,不管是WiFi还是4G,都会预加载
+			"packages": [
+				"pagesMember"
+			] //指定分包预加载
+		}
 	}
 }

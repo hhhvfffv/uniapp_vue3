@@ -1,5 +1,4 @@
 
-
 <template>
   <scroll-view class="viewport" scroll-y enable-back-to-top>
     <!-- 个人资料 -->
@@ -38,7 +37,7 @@
           </view>
         </view>
       </view>
-      <navigator class="settings" url="/pagesMember/settings/settings" hover-class="none">
+      <navigator class="settings" url="/pagesMember/settings" hover-class="none">
         设置
       </navigator>
     </view>
