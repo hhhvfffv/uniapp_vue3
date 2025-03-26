@@ -31,7 +31,7 @@ postLoginMinAPI({
 
 //3.模拟手机号码登录
 const onGetphonenumberSimple = async()=>{
- const res =await postLoginWxMinSimpleAPI('17781042925')
+ const res =await postLoginWxMinSimpleAPI('13123456789')
  //登录跳转
  loginSuccess(res.result)
 }

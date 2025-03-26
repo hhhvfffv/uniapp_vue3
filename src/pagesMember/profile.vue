@@ -7,7 +7,7 @@
     </view>
     <!-- 头像 -->
     <view class="avatar">
-      <view class="avatar-content">
+      <view class="avatar-content" @tap="onAvatarChange">
         <image class="image" :src="profile.avatar" mode="aspectFill" />
         <text class="text">点击修改头像</text>
       </view>
@@ -53,7 +53,7 @@
         <view class="form-item">
           <text class="label">城市</text>
           <picker class="picker" mode="region" :value="profile.fullLocation?.split('')">
-            <view v-if="profile.fullLocatio">广东省广州市天河区</view>
+            <view v-if="profile.fullLocation">{{profile.fullLocation}}</view>
             <view class="placeholder" v-else>请选择城市</view>
           </picker>
         </view>
@@ -91,6 +91,8 @@ const getMemberProfileData = async ()=>{
   profile.value = res.result
   
 }
+
+//2.
 </script>
 
 <style lang="scss">
