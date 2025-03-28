@@ -40,6 +40,7 @@
         <view class="form-item">
           <text class="label">生日</text>
           <picker
+          @change="onBirthdayChange"
             class="picker"
             mode="date"
             start="1900-01-01"
@@ -135,13 +136,19 @@ const onGenderChange = (e)=>{
   profile.value.gender = e.detail.value
 }
 
+//4.生日修改
+const onBirthdayChange = (e)=>{
+  //同步到页面
+  profile.value.birthday = e.detail.value 
+}
+
 
 //2.保存用信息
 /**
  * 参数
  *  nickname: '丞义',
     gender: '女',
-    birthbagy: '2006-01-21',
+    birthday: '2006-01-21',
     profession: '学生',
     provinceCode: '',
     cityCode: '',
@@ -151,7 +158,8 @@ const onsubmit = async()=>{
 //更改的数据
 const data = {
   nickname:profile.value.nickname,
-  gender:profile.value.gender   
+  gender:profile.value.gender,
+  birthday:profile.value.birthday  
 }
 
    const res = await putMemberProfileAPI(data)
