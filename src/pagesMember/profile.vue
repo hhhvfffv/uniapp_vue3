@@ -53,7 +53,10 @@
         </view>
         <view class="form-item">
           <text class="label">城市</text>
-          <picker class="picker" mode="region" :value="profile.fullLocation?.split('')">
+          <picker class="picker" mode="region" 
+          :value="profile.fullLocation?.split('')"
+          @change="onCityChange"
+          >
             <view v-if="profile.fullLocation">{{profile.fullLocation}}</view>
             <view class="placeholder" v-else>请选择城市</view>
           </picker>
@@ -142,6 +145,14 @@ const onBirthdayChange = (e)=>{
   profile.value.birthday = e.detail.value 
 }
 
+//5.城市修改
+const onCityChange = (e)=>{
+  console.log(e.detail);
+  profile.value.fullLocation = e.detail.value.join(' ')//页面使用空客区分这里把数组转换成字符
+  //同步到后端
+  profile.value.fullLocationCode = e.detail.code
+}
+
 
 //2.保存用信息
 /**
@@ -155,11 +166,16 @@ const onBirthdayChange = (e)=>{
     countyCode: '',
  */
 const onsubmit = async()=>{
+  //省市区
+    const [provinceCode,cityCode,countyCode] = profile.value.fullLocationCode
 //更改的数据
 const data = {
   nickname:profile.value.nickname,
   gender:profile.value.gender,
-  birthday:profile.value.birthday  
+  birthday:profile.value.birthday,
+  provinceCode,
+  cityCode,
+  countyCode
 }
 
    const res = await putMemberProfileAPI(data)

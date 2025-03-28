@@ -24,7 +24,7 @@ export const getMemberProfileAPI = () => {
 const data_ = {
     nickname: '丞义',
     gender: '女',
-    birthday: "2000-01-01",
+    birthday: "2006-01-21",
     profession: '学生',
     provinceCode: '',
     cityCode: '',
