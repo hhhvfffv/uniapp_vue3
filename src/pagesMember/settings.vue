@@ -4,7 +4,7 @@
   <view class="viewport">
     <!-- 列表1 -->
     <view class="list" v-if="menberStore.profile">
-      <navigator url="/pagesMember/address/address" hover-class="none" class="item arrow">
+      <navigator url="/pagesMember/address" hover-class="none" class="item arrow">
         我的收货地址
       </navigator>
     </view>

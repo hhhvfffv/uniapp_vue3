@@ -101,6 +101,18 @@
 					"style": {
 						"navigationBarTitleText": "个人信息"
 					}
+				},
+				{
+					"path": "address",
+					"style": {
+						"navigationBarTitleText": "地址管理"
+					}
+				},
+				{
+					"path": "address-form",
+					"style": {
+						"navigationBarTitleText": ""
+					}
 				}
 			]
 		}
