@@ -22,11 +22,11 @@
         </view>
         <view class="form-item">
           <text class="label">昵称</text>
-          <input class="input" type="text" placeholder="请填写昵称" :value="profile.nickname" />
+          <input class="input" type="text" placeholder="请填写昵称" v-model="profile.nickname" />
         </view>
         <view class="form-item">
           <text class="label">性别</text>
-          <radio-group>
+          <radio-group  @change="onGenderChange">
             <label class="radio">
               <radio value="男" color="#27ba9b" :checked="profile.gender === '男'" />
               男
@@ -63,13 +63,15 @@
         </view>
       </view>
       <!-- 提交按钮 -->
-      <button class="form-button">保 存</button>
+      <button class="form-button" @tap="onsubmit">保 存</button>
     </view>
   </view>
 </template>
 
 <script setup>
-import {getMemberProfileAPI} from '../services/profile'
+import {getMemberProfileAPI,putMemberProfileAPI} from '../services/profile'
+import useMemberStore from '../store/index'
+
 import { ref } from 'vue'
 
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
@@ -82,17 +84,84 @@ await getMemberProfileData()
 const { safeAreaInsets } = uni.getWindowInfo()
 //1.请求用户信息的数据
 const profile = ref([])
+//3.同步到我的页面(我的页面是通过useMemberStore获取的)
+const memberStore = useMemberStore()
+
+
 
 //1.请求用户信息的数据
 const getMemberProfileData = async ()=>{
   const res = await getMemberProfileAPI()
-  console.log(res);
   
   profile.value = res.result
   
 }
+//2.头像修改
+const onAvatarChange = ()=>{
+  uni.chooseMedia({
+    count:1,
+    mediaType:["image"],
+    success:(success)=>{
+      // console.log(success);
+      const {tempFilePath} = success.tempFiles[0]
+      console.log(tempFilePath);
+      //文件上传（接口500）
+      uni.uploadFile({
+        url:'/member/profile/avatar',
+        name:'file',
+        filePath:tempFilePath,
+        success:(res)=>{
+          if(res.statusCode === 200){
+            const avatar = JSON.parse(res.data).result.avatar
+            //赋值给渲染到页面的数据
+            profile.value.avatar = avatar
+            //同步到我的页面
+            useMemberStore.profile.avatar = avatar
+          }else if(res.statusCode === 500){
+            uni.showToast({
+              icon:"none",
+              title:"上传失败,服务器500",
+            })
+          }
+        },
+      })
+    },
+  })
+}
 
-//2.
+
+//3.关于性别修改的更改
+const onGenderChange = (e)=>{
+  profile.value.gender = e.detail.value
+}
+
+
+//2.保存用信息
+/**
+ * 参数
+ *  nickname: '丞义',
+    gender: '女',
+    birthbagy: '2006-01-21',
+    profession: '学生',
+    provinceCode: '',
+    cityCode: '',
+    countyCode: '',
+ */
+const onsubmit = async()=>{
+//更改的数据
+const data = {
+  nickname:profile.value.nickname,
+  gender:profile.value.gender   
+}
+
+   const res = await putMemberProfileAPI(data)
+   //同步到我的页面，存到pinia里面
+   memberStore.profile.nickname = res.result.nickname
+   //保存后返回上一页
+   uni.navigateBack()
+}
+
+
 </script>
 
 <style lang="scss">
