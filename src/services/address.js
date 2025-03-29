@@ -46,3 +46,10 @@ export const getMemberAddressListAPI = () => {
  * GET
  * /member/address
  */
+
+export const getMemberAddressByIdAPI = (id) => {
+    return http({
+        url: `/member/address/${id}`,
+        method: 'GET',
+    })
+}

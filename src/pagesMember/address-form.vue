@@ -15,7 +15,7 @@
       <view class="form-item">
         <text class="label">所在地区</text>
         <picker class="picker" mode="region" @change="onRegionChange">
-          <view v-if="form.fullLocation">{{form.fullLocation.join(' ')}}</view>
+          <view v-if="form.fullLocation">{{form.fullLocation}}</view>
           <view v-else class="placeholder">请选择省/市/区(县)</view>
         </picker>
       </view>
@@ -35,15 +35,20 @@
 </template>
 
 <script setup>
-import { getMemberAddressAPI } from '../services/address'
+import { getMemberAddressAPI,getMemberAddressByIdAPI } from '../services/address'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 import { ref ,defineProps} from 'vue'
 
 onLoad(()=>{
 setTitle()
+//只有修改传过来才有id，要判断是是不是修改
+if(id){
+  getMemberAddressByIDData()
+}
 })
 
-//2.页面动态设置标题
+
+//2.页面动态设置标题和获取修改参数
 const {id} = defineProps(['id'])
 // 表单数据
 const form = ref({
@@ -90,6 +95,13 @@ const onSubmit = async(e) => {
   })
   //返回
   uni.navigateBack()
+}
+
+//6.页面显示修改页面的数据
+const getMemberAddressByIDData = async() =>{
+  const res = await getMemberAddressByIdAPI(id)
+  //合并对象
+  Object.assign(form.value,res.result)
 }
 </script>
 
