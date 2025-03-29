@@ -53,3 +53,15 @@ export const getMemberAddressByIdAPI = (id) => {
         method: 'GET',
     })
 }
+
+/**
+ * 修改地址保存
+ * /member/address
+ */
+export const putMemberAddressByIdAPI = (id, data) => {
+    return http({
+        url: `/member/address/${id}`,
+        method: 'PUT',
+        data
+    })
+}

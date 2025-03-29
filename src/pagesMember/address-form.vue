@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { getMemberAddressAPI,getMemberAddressByIdAPI } from '../services/address'
+import { getMemberAddressAPI,getMemberAddressByIdAPI,putMemberAddressByIdAPI } from '../services/address'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 import { ref ,defineProps} from 'vue'
 
@@ -86,15 +86,21 @@ const onSwitchChange = (e)=>{
 
 //5.提交到后端
 const onSubmit = async(e) => {
-  //这里form虽然实际多了一个fullLocation但是后端不会接收的
-  const res = await getMemberAddressAPI(form.value)
+  if(id){
+  await putMemberAddressByIdAPI(id,form.value)
+  }else{
+        //这里form虽然实际多了一个fullLocation但是后端不会接收的(新建地址)
+        await getMemberAddressAPI(form.value)
+  }
   //成功提示
   uni.showToast({
     icon:"none",
-    title:"提交成功"
+    title:id?"修改成功":"保存成功"
   })
-  //返回
+setTimeout(()=>{
+    //返回
   uni.navigateBack()
+},2000)
 }
 
 //6.页面显示修改页面的数据
