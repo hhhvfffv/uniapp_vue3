@@ -6,34 +6,36 @@
       <!-- 表单内容 -->
       <view class="form-item">
         <text class="label">收货人</text>
-        <input class="input" placeholder="请填写收货人姓名" value="" />
+        <input class="input" placeholder="请填写收货人姓名" v-model="form.receiver" />
       </view>
       <view class="form-item">
         <text class="label">手机号码</text>
-        <input class="input" placeholder="请填写收货人手机号码" value="" />
+        <input class="input" placeholder="请填写收货人手机号码" v-model="form.contact" />
       </view>
       <view class="form-item">
         <text class="label">所在地区</text>
-        <picker class="picker" mode="region" value="">
-          <view v-if="false">广东省 广州市 天河区</view>
+        <picker class="picker" mode="region" @change="onRegionChange">
+          <view v-if="form.fullLocation">{{form.fullLocation.join(' ')}}</view>
           <view v-else class="placeholder">请选择省/市/区(县)</view>
         </picker>
       </view>
       <view class="form-item">
         <text class="label">详细地址</text>
-        <input class="input" placeholder="街道、楼牌号等信息" value="" />
+        <input class="input" placeholder="街道、楼牌号等信息" v-model="form.address" />
       </view>
       <view class="form-item">
         <label class="label">设为默认地址</label>
-        <switch class="switch" color="#27ba9b" :checked="true" />
+        <switch class="switch" color="#27ba9b" @change="onSwitchChange" :checked="form.isDefault" />
       </view>
     </form>
   </view>
   <!-- 提交按钮 -->
-  <button class="button">保存并使用</button>
+  <button class="button" @tap="onSubmit">保存并使用</button>
+  {{form}}
 </template>
 
 <script setup>
+import { getMemberAddressAPI } from '../services/address'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
 import { ref ,defineProps} from 'vue'
 
@@ -61,6 +63,33 @@ const setTitle = () =>{
   uni.setNavigationBarTitle({
     title:id?"修改地址":"新建地址",
   })
+}
+
+//3.地址改变
+const onRegionChange = (e) =>{
+  //前端显示
+  form.value.fullLocation = e.detail.value
+  //后端需要
+  const [provinceCode,cityCode,countyCode] = e.detail.code
+  Object.assign(form.value,{provinceCode,cityCode,countyCode})
+}
+
+//4.开关控制
+const onSwitchChange = (e)=>{
+   form.value.isDefault = e.detail.value?1:0//默认地址，1为是，0为否
+}
+
+//5.提交到后端
+const onSubmit = async(e) => {
+  //这里form虽然实际多了一个fullLocation但是后端不会接收的
+  const res = await getMemberAddressAPI(form.value)
+  //成功提示
+  uni.showToast({
+    icon:"none",
+    title:"提交成功"
+  })
+  //返回
+  uni.navigateBack()
 }
 </script>
 
