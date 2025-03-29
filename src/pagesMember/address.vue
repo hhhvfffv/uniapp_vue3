@@ -7,36 +7,18 @@
       <view v-if="true" class="address">
         <view class="address-list">
           <!-- 收货地址项 -->
-          <view class="item">
+          <view class="item" v-for="item in addressData" :key="item.id">
             <view class="item-content">
               <view class="user">
-                黑马小王子
-                <text class="contact">13111111111</text>
-                <text v-if="true" class="badge">默认</text>
+                {{item.address}}
+                <text class="contact">{{item.contact}}</text>
+                <text v-if="item.isDefault" class="badge">默认</text>
               </view>
-              <view class="locate">广东省 广州市 天河区 黑马程序员</view>
+              <view class="locate">{{item.fullLocation}}</view>
               <navigator
                 class="edit"
                 hover-class="none"
-                :url="`/pagesMember/address-form?id=1`"
-              >
-                修改
-              </navigator>
-            </view>
-          </view>
-          <!-- 收货地址项 -->
-          <view class="item">
-            <view class="item-content">
-              <view class="user">
-                黑马小公主
-                <text class="contact">13222222222</text>
-                <text v-if="false" class="badge">默认</text>
-              </view>
-              <view class="locate">北京市 北京市 顺义区 黑马程序员</view>
-              <navigator
-                class="edit"
-                hover-class="none"
-                :url="`/pagesMember/address-form?id=2`"
+                :url="`/pagesMember/address-form?id=${item.id}`"
               >
                 修改
               </navigator>
@@ -57,7 +39,23 @@
 
 
 <script setup>
-//
+import { getMemberAddressAPI,getMemberAddressListAPI } from '../services/address'
+import { onLoad, onShow, onReady } from '@dcloudio/uni-app';
+import { ref ,defineProps} from 'vue'
+
+onShow(()=>{
+  getAdressData()
+})
+
+//1.初始化页面地址数据
+const addressData = ref([])
+
+
+//1.初始化页面地址数据
+const getAdressData = async ()=>{
+  const res = await getMemberAddressListAPI()
+  addressData.value = res.result
+}
 </script>
 
 <style lang="scss">

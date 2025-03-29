@@ -24,3 +24,25 @@ export const getMemberAddressAPI = (data = data_) => {
         data
     })
 }
+
+/**
+ * 管理地址的渲染
+ * @param {Object} 
+ * GET
+ * /member/address
+ */
+
+export const getMemberAddressListAPI = () => {
+    return http({
+        url: '/member/address',
+        method: 'GET',
+    })
+}
+
+
+/**
+ * 修改地址的渲染
+ * @param {Object} 
+ * GET
+ * /member/address
+ */
